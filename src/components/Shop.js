@@ -1,25 +1,41 @@
-import{useNavigate} from 'react-router-dom'
-
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import React from 'react'
 import "../styles/Shop.css"
 
+
 const Shop = (props) => {
+
+  const navigate = useNavigate();
+  function handleClick(id){
+    navigate(`/shop/${id}`)
+  }
+  const [cartOpen, setcartOpen, cartContents, setcartContents] = useOutletContext()
+  
+  function handleAddToCart(e){
+    const thisProductTemp = props.products.filter(product=>{
+     return product.id == e.target.id
+     })
+    const thisProduct = thisProductTemp[0]
+    setcartContents(cartContents.concat([thisProduct]))
+    console.log(cartContents)
+    e.stopPropagation()
+    setcartOpen("yes")
+    setTimeout(() => {setcartOpen("no")}, 3000);
+
+  }
+
   return (
     <div id="shop-container">
       {props.products.map(product=>{
-        return <div key={product.id} className="product-card" onClick={()=>{Click(product.id)}}>
+        return <div key={product.id} className="product-card" onClick={e=>{handleClick(product.id)}}>
           <img alt={product.name} src={product.images[0]} className="product-icon"></img>
           <h2>{product.name}</h2>
-          <h3>{product.price}</h3>
+          <h3>${product.price}</h3>
+          <button id={product.id} onClick={e=>{handleAddToCart(e)}} >Add to Cart</button>
         </div>
       })}
     </div>
   );
 };
-
-//need to figure out how to use "link or useNavigate" instead, breaking hooks rules
-const Click = (id)=>{
-  window.location = `/${id}`
-
-}
 
 export default Shop;

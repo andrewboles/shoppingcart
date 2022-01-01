@@ -1,8 +1,7 @@
 import {
   BrowserRouter,
   Routes,
-  Route,
-  useParams
+  Route
 } from "react-router-dom";
 
 import {App} from "./App";
@@ -18,10 +17,10 @@ function RouteSwitch() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
-        {/* <Route index element={<Profile />} /> */}
-        <Route path="fullcart" element={<FullCart />} />
+        <Route index element={<Shop products={ProductList()} />} />
+        <Route path="fullcart" element={<FullCart products={ProductList()}/>} />
         {/* <Route path="help" element={<Help />} /> */}
-        <Route path="/:productid" element={<ProductDetails />} />
+        <Route path="shop/:productid" element={<ProductDetails products={ProductList()}/>} />
         <Route path="shop" element={<Shop products={ProductList()}/>} />
       </Route>
     </Routes>

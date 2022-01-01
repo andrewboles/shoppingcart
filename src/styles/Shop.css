@@ -3,6 +3,13 @@
   flex-flow: row ;
 }
 
+button{
+  display: flex;
+  margin:  auto;
+  width:40%;
+  justify-content: center;
+}
+
 .product-card{
   display: flex;
   flex-flow: column;
