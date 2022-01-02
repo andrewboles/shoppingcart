@@ -16,15 +16,23 @@ import "../styles/App.css"
 export function App() {
 
   const [cartOpen, setcartOpen] = useState("no")
-  const [cartContents, setcartContents] = useState([])
+  const [cartContents, setcartContents] = useState({})
 
+  function totalUp(){
+    let sum = 0;
+    Object.values(cartContents).map(product=>{
+      sum += product.qty
+      return null
+    })
+    return sum
+  }
 
   return (
     <div id="app-content">
       <h1>Vintage Synthesizers at Exorbitant Prices!</h1>
       <nav>
         <Link to="shop">Products</Link> |{" "}
-        <Link to="fullcart">Cart</Link>
+        <Link to="fullcart">Cart - {totalUp()}</Link>
       </nav>
       <div className="content">
         <Outlet context={[cartOpen, setcartOpen, cartContents, setcartContents]}/>
