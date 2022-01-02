@@ -32,7 +32,7 @@ export function App() {
       <h1>Vintage Synthesizers at Exorbitant Prices!</h1>
       <nav>
         <Link to="shop">Products</Link> |{" "}
-        <Link to="fullcart">Cart - {totalUp()}</Link>
+        <Link to='fullcart' state={{cartContents: cartContents, cheese: "67"}}>Cart - {totalUp()}</Link>
       </nav>
       <div className="content">
         <Outlet context={[cartOpen, setcartOpen, cartContents, setcartContents]}/>

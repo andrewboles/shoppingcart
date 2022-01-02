@@ -18,11 +18,7 @@ const Shop = (props) => {
      })
     const thisProduct = thisProductTemp[0]
     const prodid = thisProduct.id
-    // console.log(`id type: ${typeof prodid}`)
-    console.log(`prod object: ${cartContents[prodid]}`)
     if(cartContents[prodid]?.qty){
-      console.log("right track")
-      console.log(Object.keys(cartContents[prodid]))
       setcartContents(cartContents=>({...cartContents,[prodid]: {
         qty: cartContents[prodid].qty+1,
         info: thisProduct
