@@ -1,7 +1,9 @@
 import {useParams, useOutletContext} from 'react-router-dom'
+import {useState, useEffect} from 'react'
 import "../styles/productdetails.css"
 
 const ProductDetails = (props) => {
+  let [cartSubmit, setcartSubmit] = useState({})
   let id = useParams().productid
   const thisProductTemp = props.products.filter(product=>{
     return product.id == id
@@ -10,43 +12,51 @@ const ProductDetails = (props) => {
   const [cartOpen, setcartOpen, cartContents, setcartContents] = useOutletContext()
 
   function handleAddToCart(e){
+    let addQty = cartSubmit[e.target.id] ?? 1
+    setcartOpen("yes")
+    setTimeout(()=>{setcartOpen("no")}, 3000);
     e.stopPropagation()
     const thisProductTemp = props.products.filter(product=>{
      return product.id == e.target.id
      })
     const thisProduct = thisProductTemp[0]
     const prodid = thisProduct.id
-    // console.log(`id type: ${typeof prodid}`)
-    console.log(`prod object: ${cartContents[prodid]}`)
     if(cartContents[prodid]?.qty){
-      console.log("right track")
-      console.log(Object.keys(cartContents[prodid]))
       setcartContents(cartContents=>({...cartContents,[prodid]: {
-        qty: cartContents[prodid].qty+1,
+        qty: cartContents[prodid].qty+addQty,
         info: thisProduct
       }}));
     }else{
       setcartContents(cartContents=>({
         ...cartContents,[prodid]:{
-          qty: 1,
+          qty: addQty,
           info: thisProduct
         }
       }))
 
     }
-
-    // console.log(`current qty: ${Object.keys(cartContents)}`)
-
-    setcartOpen("yes")
-    setTimeout(() => {setcartOpen("no")}, 3000);
-
   }
+
+  useEffect(()=>{
+    props.products.map(product=>{
+      setcartSubmit(cart=>({...cart,[thisProduct.id]: 1}))
+    })
+  },[props]);
+
+  function handleChange(e){
+    if(Number(e.target.value)){
+     setcartSubmit(cartContents=>({...cartContents,[e.target.id]: Number(e.target.value)}))
+    }else{
+      return false
+    }
+  };
 
   return (
     <div>
       <h1>{thisProduct.name}</h1>
       <h3>${thisProduct.price}</h3>
       <img className="mainimage"alt={thisProduct.name} src={thisProduct.images[0]}></img>
+      <input value={cartSubmit[thisProduct.id]} id={thisProduct.id} type="number" min="0" max="100" maxLength="3" onClick={e=>{e.stopPropagation()}} onChange={e=>{handleChange(e)}}></input>
       <button id={thisProduct.id} onClick={e=>{handleAddToCart(e)}} >Add to Cart</button>
     </div>
   );

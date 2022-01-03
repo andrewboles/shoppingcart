@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom'
 const FullCart = (props) => {
   
   const [cartOpen, setcartOpen, cartContents, setcartContents] = useOutletContext()
+  setcartOpen("no")
 
   function totalUp(){
     let sum = 0;
